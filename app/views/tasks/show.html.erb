@@ -1,8 +1,20 @@
-<h1>id: <%= @task.id %> のタスク詳細ページ</h1>
+<% if logged_in? %>
+  <h1>id: <%= @task.id %> のタスク詳細ページ</h1>
+  
+  <p>コンテント：<%= @task.content %></p>
+  <p>ステータス：<%= @task.status %></p>
+  
+  <%= link_to 'このタスクを編集する', edit_task_path(@task) %>
+  <%= link_to 'このメッセージを削除する', @message, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>
+  <br>
+  <%= link_to '一覧に戻る', root_path %>
 
-<p>コンテント：<%= @task.content %></p>
-<p>ステータス：<%= @task.status %></p>
+<% else %>
+  <div class="bg-secondary p-3 p-sm-5 my-4 rounded">
+    <div class="text-center text-white">
+      <h1>Welcome to the Tasklists</h1>
+      <%= link_to 'Sign up now!', signup_path, class: 'btn btn-lg btn-primary' %>
+    </div>
+  </div>
+<% end %>
 
-<%= link_to '一覧に戻る', tasks_path %>
-<%= link_to 'このタスクを編集する', edit_task_path(@task) %>
-<%= link_to 'このタスクを削除する', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>

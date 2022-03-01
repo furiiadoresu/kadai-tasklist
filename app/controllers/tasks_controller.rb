@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :correct_user, only: [:destroy]
+  before_action :correct_user
   
   def index
     if logged_in?
@@ -22,10 +22,10 @@ class TasksController < ApplicationController
 
     if @task.save
       flash[:success] = 'Task が正常に追加されました'
-      redirect_to root_url
+      redirect_to @task
     else
       flash.now[:danger] = 'Task が追加されませんでした'
-      render 'tasks/index'
+      render :new
     end
   end
 
@@ -36,26 +36,27 @@ class TasksController < ApplicationController
   def update
     @task = current_user.tasks.build(task_params)
 
-    if @task.update
+    if @task.update(task_params)
       flash[:success] = 'Task は正常に更新されました'
-      render 'tasks/index'
+      redirect_to @task
     else
       flash.now[:danger] = 'Task は更新されませんでした'
-      render 'tasks/index'
+      render :edit
     end
   end
 
   def destroy
+    @task = Task.find(params[:id])
     @task.destroy
-    flash[:success] = 'メッセージを削除しました。'
-    redirect_back(fallback_location: root_path)
+    flash[:success] = 'タスクを削除しました。'
+    redirect_to tasks_url
   end
   
   private
 
   # Strong Parameter
   def task_params
-    params.require(:task).permit(:content)
+    params.require(:task).permit(:status, :content)
   end
   
   def correct_user
@@ -64,4 +65,5 @@ class TasksController < ApplicationController
       redirect_to root_url
     end
   end
+  
 end

@@ -8,7 +8,9 @@
             <span class="text-muted">posted at <%= task.created_at %></span>
           </div>
           <div>
-            ID: <%= link_to task.id, task %>:<span><p>コンテンツ：<%= task.content %></p></span>
+            ID: <%= link_to task.id, task %>
+            <span>ステータス：<%= task.status %></span>
+            <span>コンテンツ：<%= task.content %></span>
           </div>
         </div>
       </li>
